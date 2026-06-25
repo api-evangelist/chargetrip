@@ -1,0 +1,138 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Chargetrip GraphQL API",
+    "version": "1.0",
+    "description": "GraphQL POST examples for the Chargetrip EV routing API. All queries and mutations are HTTP POST to https://api.chargetrip.io/graphql with x-client-id and x-app-id headers. Real-time route updates use GraphQL subscriptions over WebSocket at wss://api.chargetrip.io/subscription."
+  },
+  "request": {
+    "headers": [
+      { "name": "Content-Type", "value": "application/json" },
+      { "name": "x-client-id", "value": "{{clientId}}" },
+      { "name": "x-app-id", "value": "{{appId}}" }
+    ]
+  },
+  "items": [
+    {
+      "info": { "name": "Routes", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create route (newRoute mutation)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"newRoute\",\"query\":\"mutation newRoute($input: RequestInput!) { newRoute(input: $input) }\",\"variables\":{\"input\":{\"ev\":{\"id\":\"5d161be5c9eef46132d9d20a\",\"battery\":{\"stateOfCharge\":{\"value\":70,\"type\":\"kilowatt_hour\"}}},\"routeRequest\":{\"origin\":{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[4.8951,52.3702]}},\"destination\":{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.3522,48.8566]}}}}}}"
+            }
+          },
+          "docs": "Creates a route and returns a route id. Fetch with the route query or subscribe to routeUpdatedById over WebSocket."
+        },
+        {
+          "info": { "name": "Fetch route (route query)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"route\",\"query\":\"query route($id: ID!) { route(id: $id) { status route { distance duration charges } } }\",\"variables\":{\"id\":\"5f2e1a9c7d4b3e0012abcd34\"}}"
+            }
+          },
+          "docs": "Fetches a previously created route by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Stations", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Stations around (stationAround query)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"stationAround\",\"query\":\"query stationAround($query: StationAroundQuery!) { stationAround(query: $query, size: 20, page: 0) { id name status coordinates { latitude longitude } } }\",\"variables\":{\"query\":{\"location\":{\"type\":\"Point\",\"coordinates\":[4.8951,52.3702]},\"distance\":5000}}}"
+            }
+          },
+          "docs": "Fetches the closest stations around a GeoJSON location."
+        },
+        {
+          "info": { "name": "Station details (station query)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"station\",\"query\":\"query station($id: ID!) { station(id: $id) { id name status evses { status connectors { standard power } } } }\",\"variables\":{\"id\":\"5cd5e768e0d2cf001235f342\"}}"
+            }
+          },
+          "docs": "Fetches a single charge station by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Car Database", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List vehicles (vehicleList query)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"vehicleList\",\"query\":\"query vehicleList($search: String, $page: Int, $size: Int) { vehicleList(search: $search, page: $page, size: $size) { id naming { make model version } battery { usable_kwh full_kwh } } }\",\"variables\":{\"search\":\"Tesla\",\"page\":0,\"size\":10}}"
+            }
+          },
+          "docs": "Lists EV vehicles with pagination, filter, and search."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Isolines", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create isoline (createIsoline mutation)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"createIsoline\",\"query\":\"mutation createIsoline($input: IsolineInput!) { createIsoline(input: $input) }\",\"variables\":{\"input\":{\"ev\":{\"id\":\"5d161be5c9eef46132d9d20a\",\"battery\":{\"stateOfCharge\":{\"value\":70,\"type\":\"kilowatt_hour\"}}},\"origin\":{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[4.8951,52.3702]}}}}}"
+            }
+          },
+          "docs": "Creates a reachability isoline and returns an isoline id."
+        },
+        {
+          "info": { "name": "Fetch isoline (isoline query)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"isoline\",\"query\":\"query isoline($id: ID!) { isoline(id: $id) { status polygons maxDrivableDistance } }\",\"variables\":{\"id\":\"5f2e1a9c7d4b3e0012abef56\"}}"
+            }
+          },
+          "docs": "Fetches a previously created isoline by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Operators", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List operators (operatorList query)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{\"operationName\":\"operatorList\",\"query\":\"query operatorList($page: Int, $size: Int) { operatorList(page: $page, size: $size) { id name } }\",\"variables\":{\"page\":0,\"size\":20}}"
+            }
+          },
+          "docs": "Lists charge point operators with pagination and filters."
+        }
+      ]
+    }
+  ]
+}

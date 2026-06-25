@@ -1,0 +1,192 @@
+{
+  "info": {
+    "name": "Chargetrip GraphQL API",
+    "description": "GraphQL POST examples for the Chargetrip EV routing API. All operations are HTTP POST to https://api.chargetrip.io/graphql with x-client-id and x-app-id headers. Subscriptions (routeUpdatedById) run over WebSocket at wss://api.chargetrip.io/subscription and are not included here.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.chargetrip.io/graphql" },
+    { "key": "clientId", "value": "" },
+    { "key": "appId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Routes",
+      "item": [
+        {
+          "name": "Create route (newRoute mutation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation newRoute($input: RequestInput!) {\n  newRoute(input: $input)\n}",
+                "variables": "{\n  \"input\": {\n    \"ev\": { \"id\": \"5d161be5c9eef46132d9d20a\", \"battery\": { \"stateOfCharge\": { \"value\": 70, \"type\": \"kilowatt_hour\" } } },\n    \"routeRequest\": {\n      \"origin\": { \"type\": \"Feature\", \"geometry\": { \"type\": \"Point\", \"coordinates\": [4.8951, 52.3702] } },\n      \"destination\": { \"type\": \"Feature\", \"geometry\": { \"type\": \"Point\", \"coordinates\": [2.3522, 48.8566] } }\n    }\n  }\n}"
+              }
+            },
+            "description": "Creates a route and returns a route id. Poll the route query or subscribe to routeUpdatedById (WebSocket) for results."
+          }
+        },
+        {
+          "name": "Fetch route (route query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query route($id: ID!) {\n  route(id: $id) {\n    status\n    route { distance duration charges }\n  }\n}",
+                "variables": "{\n  \"id\": \"5f2e1a9c7d4b3e0012abcd34\"\n}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stations",
+      "item": [
+        {
+          "name": "Stations around (stationAround query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query stationAround($query: StationAroundQuery!) {\n  stationAround(query: $query, size: 20, page: 0) {\n    id\n    name\n    status\n    coordinates { latitude longitude }\n  }\n}",
+                "variables": "{\n  \"query\": {\n    \"location\": { \"type\": \"Point\", \"coordinates\": [4.8951, 52.3702] },\n    \"distance\": 5000\n  }\n}"
+              }
+            }
+          }
+        },
+        {
+          "name": "Station details (station query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query station($id: ID!) {\n  station(id: $id) {\n    id\n    name\n    status\n    evses { status connectors { standard power } }\n  }\n}",
+                "variables": "{\n  \"id\": \"5cd5e768e0d2cf001235f342\"\n}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Car Database",
+      "item": [
+        {
+          "name": "List vehicles (vehicleList query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query vehicleList($search: String, $page: Int, $size: Int) {\n  vehicleList(search: $search, page: $page, size: $size) {\n    id\n    naming { make model version }\n    battery { usable_kwh full_kwh }\n  }\n}",
+                "variables": "{\n  \"search\": \"Tesla\",\n  \"page\": 0,\n  \"size\": 10\n}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Isolines",
+      "item": [
+        {
+          "name": "Create isoline (createIsoline mutation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation createIsoline($input: IsolineInput!) {\n  createIsoline(input: $input)\n}",
+                "variables": "{\n  \"input\": {\n    \"ev\": { \"id\": \"5d161be5c9eef46132d9d20a\", \"battery\": { \"stateOfCharge\": { \"value\": 70, \"type\": \"kilowatt_hour\" } } },\n    \"origin\": { \"type\": \"Feature\", \"geometry\": { \"type\": \"Point\", \"coordinates\": [4.8951, 52.3702] } }\n  }\n}"
+              }
+            }
+          }
+        },
+        {
+          "name": "Fetch isoline (isoline query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query isoline($id: ID!) {\n  isoline(id: $id) {\n    status\n    polygons\n    maxDrivableDistance\n  }\n}",
+                "variables": "{\n  \"id\": \"5f2e1a9c7d4b3e0012abef56\"\n}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Operators",
+      "item": [
+        {
+          "name": "List operators (operatorList query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-client-id", "value": "{{clientId}}" },
+              { "key": "x-app-id", "value": "{{appId}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query operatorList($page: Int, $size: Int) {\n  operatorList(page: $page, size: $size) {\n    id\n    name\n  }\n}",
+                "variables": "{\n  \"page\": 0,\n  \"size\": 20\n}"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

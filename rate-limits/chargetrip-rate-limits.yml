@@ -1,0 +1,63 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Chargetrip
+providerId: chargetrip
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- EV
+- Routing
+- Charging Stations
+- GraphQL
+- Mobility
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Chargetrip enforces per-account request quotas per API service rather than a
+  single global rate. On the free Lite tier each service (routing, stations,
+  vehicles, isolines, operators) has its own limited request allowance; once a
+  service's quota is reached, requests to that service are blocked. Accounts are
+  notified at 80% of usage and can monitor per-service usage in the dashboard.
+  Limits increase on the Standard tier and under Enterprise agreements. Specific
+  numeric limits are not publicly published and are not reconciled here.
+notes: >-
+  Per-service quotas are visible in the Chargetrip dashboard. Limits change as
+  accounts move between Lite, Standard, and Enterprise. Verify current values on
+  reconciliation at https://developers.chargetrip.com.
+sources:
+- https://developers.chargetrip.com/basics/api-basics/getting-started/
+- https://www.chargetrip.com/pricing/api
+limits:
+- name: Per-Service Request Quota (Free / Lite)
+  scope: account
+  metric: requests
+  limit: see provider dashboard
+  notes: Each API service has its own limited free allowance; exceeding it blocks that service.
+- name: Usage Notification Threshold
+  scope: account
+  metric: percentage
+  limit: 80
+  notes: Accounts are notified when they reach 80% of a service's usage quota.
+- name: Standard Tier Limits
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Raised request limits unlocked by upgrading to Standard with add-ons.
+- name: Enterprise Limits
+  scope: account
+  metric: requests
+  limit: negotiated
+  notes: High-volume limits set per Enterprise agreement.
+policies:
+- name: Tiered Quotas
+  description: Per-service request allowances increase from Lite to Standard to Enterprise.
+- name: Usage Monitoring
+  description: Per-service usage is tracked in the dashboard with an 80% notification.
+- name: Backoff Strategy
+  description: Clients should implement retry with backoff and respect quota-exhaustion responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

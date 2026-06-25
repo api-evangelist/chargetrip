@@ -1,0 +1,256 @@
+"""
+Chargetrip GraphQL Schema (representative SDL)
+
+This is a REPRESENTATIVE schema modeling the documented Chargetrip API operations
+and types. It is NOT a verbatim export of Chargetrip's production schema; confirm
+field-level detail against the live Playground and Voyager schema explorer.
+
+Endpoint:      https://api.chargetrip.io/graphql          (queries + mutations, HTTP POST)
+Subscriptions: wss://api.chargetrip.io/subscription        (graphql-transport-ws)
+Auth headers:  x-client-id, x-app-id
+Docs:          https://developers.chargetrip.com
+"""
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+scalar ID
+scalar Float
+scalar JSON
+scalar GeoJSON
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+enum OperationStatus {
+  pending
+  done
+  error
+}
+
+enum StateOfChargeType {
+  kilowatt_hour
+  percentage
+  distance
+}
+
+enum StationStatus {
+  free
+  busy
+  unknown
+  error
+}
+
+enum GeoJSONType {
+  Point
+  Feature
+}
+
+# ---------------------------------------------------------------------------
+# Inputs
+# ---------------------------------------------------------------------------
+
+input PointInput {
+  type: GeoJSONType!
+  coordinates: [Float!]!
+}
+
+input FeatureInput {
+  type: GeoJSONType!
+  geometry: PointInput!
+  properties: JSON
+}
+
+input StateOfChargeInput {
+  value: Float!
+  type: StateOfChargeType!
+}
+
+input BatteryInput {
+  stateOfCharge: StateOfChargeInput
+  capacity: StateOfChargeInput
+}
+
+input EVInput {
+  id: ID!
+  battery: BatteryInput
+  climate: Boolean
+  numberOfPassengers: Int
+}
+
+input RouteRequestInput {
+  origin: FeatureInput!
+  destination: FeatureInput!
+  via: [FeatureInput!]
+  operators: OperatorPreferenceInput
+}
+
+input OperatorPreferenceInput {
+  preference: String
+  list: [ID!]
+}
+
+input NewRouteInput {
+  ev: EVInput!
+  routeRequest: RouteRequestInput!
+}
+
+input CreateIsolineInput {
+  ev: EVInput!
+  origin: FeatureInput!
+  polygonCount: Int
+}
+
+input StationAroundQueryInput {
+  location: PointInput!
+  distance: Int
+}
+
+# ---------------------------------------------------------------------------
+# Object types
+# ---------------------------------------------------------------------------
+
+type Coordinates {
+  latitude: Float
+  longitude: Float
+}
+
+type Connector {
+  standard: String
+  power: Float
+  max_electric_power: Float
+  amperage: Float
+  voltage: Float
+}
+
+type Evse {
+  id: ID
+  status: StationStatus
+  connectors: [Connector]
+}
+
+type Station {
+  id: ID!
+  external_id: String
+  name: String
+  status: StationStatus
+  coordinates: Coordinates
+  address: String
+  city: String
+  country: String
+  operator: Operator
+  evses: [Evse]
+  amenities: [String]
+}
+
+type Operator {
+  id: ID!
+  name: String
+  external_id: String
+  country_code: String
+  is_published: Boolean
+}
+
+type VehicleNaming {
+  make: String
+  model: String
+  version: String
+  chargetrip_version: String
+}
+
+type VehicleBattery {
+  usable_kwh: Float
+  full_kwh: Float
+}
+
+type VehicleRange {
+  chargetrip_range: VehicleRangeBand
+}
+
+type VehicleRangeBand {
+  best: Float
+  worst: Float
+}
+
+type Vehicle {
+  id: ID!
+  naming: VehicleNaming
+  battery: VehicleBattery
+  range: VehicleRange
+  connectors: [Connector]
+}
+
+type RouteLeg {
+  distance: Float
+  duration: Float
+  consumption: Float
+  chargeTime: Float
+  stationId: ID
+}
+
+type RouteDetails {
+  charges: Int
+  distance: Float
+  duration: Float
+  consumption: Float
+  legs: [RouteLeg]
+}
+
+"""Real-time route status envelope returned by the route query and routeUpdatedById subscription."""
+type RouteResult {
+  status: OperationStatus
+  route: RouteDetails
+}
+
+"""Isoline (reachability) result. polygons is a list of multipolygons; maxDrivableDistance is the longest drivable distance."""
+type Isoline {
+  id: ID!
+  status: OperationStatus
+  polygons: GeoJSON
+  maxDrivableDistance: Float
+}
+
+# ---------------------------------------------------------------------------
+# Operations
+# ---------------------------------------------------------------------------
+
+type Query {
+  "Fetch a previously created route by id (on-demand / re-fetch)."
+  route(id: ID!): RouteResult
+
+  "Fetch a previously created isoline by id."
+  isoline(id: ID!): Isoline
+
+  "Fetch a single charge station by id."
+  station(id: ID!): Station
+
+  "List charge stations with pagination, filter, and search."
+  stationList(page: Int, size: Int, filter: JSON, search: String): [Station]
+
+  "Fetch the closest stations around a GeoJSON location."
+  stationAround(query: StationAroundQueryInput!, page: Int, size: Int): [Station]
+
+  "List EV vehicles with pagination, filter, and search."
+  vehicleList(page: Int, size: Int, filter: JSON, search: String): [Vehicle]
+
+  "Fetch a single vehicle (consumption model and specs) by id."
+  vehicle(id: ID!): Vehicle
+
+  "List charge point operators with pagination and filters."
+  operatorList(page: Int, size: Int, filter: JSON): [Operator]
+}
+
+type Mutation {
+  "Create a route; returns a route id. The route is computed asynchronously."
+  newRoute(input: NewRouteInput!): ID
+
+  "Create a reachability isoline; returns an isoline id. Computed asynchronously."
+  createIsoline(input: CreateIsolineInput!): ID
+}
+
+type Subscription {
+  "Real-time route status and details for an id returned by newRoute (WebSocket)."
+  routeUpdatedById(id: ID!): RouteResult
+}

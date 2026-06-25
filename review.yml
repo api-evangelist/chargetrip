@@ -1,0 +1,79 @@
+aid: chargetrip
+name: Chargetrip
+review:
+  question: Does Chargetrip expose a documented public WebSocket API?
+  answer: true
+  date: '2026-06-21'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: true
+  asyncapiScopeNote: |
+    Chargetrip is a native GraphQL API. Its synchronous queries and mutations
+    are issued over HTTP POST to https://api.chargetrip.io/graphql, while
+    real-time route updates are delivered through GraphQL subscriptions over a
+    genuine WebSocket transport at wss://api.chargetrip.io/subscription using
+    the graphql-transport-ws protocol (the legacy graphql-ws protocol is
+    deprecated). An AsyncAPI 2.6 document was created at
+    asyncapi/chargetrip-asyncapi.yml modeling the routeUpdatedById subscription
+    stream as a bidirectional WebSocket channel (not HTTP SSE).
+findings:
+  summary: |
+    Yes. Chargetrip documents a public WebSocket subscription endpoint at
+    wss://api.chargetrip.io/subscription using the graphql-transport-ws
+    sub-protocol. The documented asynchronous pattern is: issue the newRoute
+    mutation over HTTP (POST /graphql) to get a route id, then open a WebSocket
+    subscription routeUpdatedById(id) to receive route status and details until
+    status == done. Queries and mutations themselves are plain HTTP POST GraphQL;
+    only subscriptions use WebSocket. Authentication for both transports uses the
+    x-client-id and x-app-id headers.
+  transports:
+    - protocol: GraphQL over HTTP
+      scheme: https
+      baseURL: https://api.chargetrip.io/graphql
+      documented: true
+      note: All queries and mutations (newRoute, createIsoline, route, isoline, station, stationList, stationAround, vehicleList, vehicle, operatorList).
+    - protocol: WebSocket
+      scheme: wss
+      baseURL: wss://api.chargetrip.io/subscription
+      documented: true
+      note: GraphQL subscriptions via graphql-transport-ws; routeUpdatedById streams real-time route updates. Legacy graphql-ws deprecated.
+  operationsConfirmed:
+    mutations:
+      - newRoute
+      - createIsoline
+    queries:
+      - route
+      - isoline
+      - station
+      - stationList
+      - stationAround
+      - vehicleList
+      - vehicle
+      - operatorList
+    subscriptions:
+      - routeUpdatedById
+sources:
+  - url: https://developers.chargetrip.com/api-reference/api/quick-setup-guide/
+    type: Documentation
+    note: GraphQL endpoint https://api.chargetrip.io/graphql; subscription endpoint wss://api.chargetrip.io/subscription via graphql-transport-ws; x-client-id + x-app-id headers.
+  - url: https://developers.chargetrip.com/api-reference/routes/introduction/
+    type: APIReference
+    note: newRoute mutation returns a route id; routeUpdatedById subscription streams updates; route query re-fetches.
+  - url: https://developers.chargetrip.com/api-reference/stations/introduction/
+    type: APIReference
+    note: Station queries (station, stationList, stationAround); OCPI 2.2-aligned database.
+  - url: https://developers.chargetrip.com/api-reference/isolines/query-isoline/
+    type: APIReference
+    note: createIsoline mutation and isoline query (polygons multipolygons, maximum drivable distance).
+  - url: https://developers.chargetrip.com/api-reference/stations/query-station-operators/
+    type: APIReference
+    note: operatorList query for charge point operators.
+actions:
+  asyncapiPath: asyncapi/chargetrip-asyncapi.yml
+  apisYmlUpdated: true
+  reason: |
+    A documented WebSocket surface exists (GraphQL subscriptions over
+    graphql-transport-ws). An AsyncAPI 2.6 document was authored for the
+    routeUpdatedById subscription stream, with the WebSocket transport and
+    graphql-transport-ws sub-protocol documented explicitly (server protocol
+    wss, info.x-transport-notes) so it is correctly represented as bidirectional
+    WebSocket rather than HTTP SSE.

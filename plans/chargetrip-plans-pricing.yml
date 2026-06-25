@@ -1,0 +1,115 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Chargetrip
+providerId: chargetrip
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- EV
+- Routing
+- Charging Stations
+- GraphQL
+- Mobility
+- Plans
+description: >-
+  Chargetrip uses a hybrid, sales-led commercial model. Every account starts on a
+  free "Lite" tier with a limited number of requests and basic access; you are
+  notified at 80% of usage and blocked once a service's free quota is reached. A
+  self-service "Standard" tier (upgradeable from the dashboard with add-ons and a
+  credit card) increases limits and unlocks premium datasets, and an Enterprise
+  tier is negotiated with sales. Published per-request rates and exact tier limits
+  are not openly listed, so the dollar amounts below are not reconciled.
+notes: >-
+  Premium station data (e.g., real-time availability, tariffs) and higher request
+  limits require an upgrade or a sales conversation; tariff data is not available on
+  the public Playground. Verify current tiers and limits at
+  https://www.chargetrip.com/pricing/api during reconciliation.
+sources:
+- https://www.chargetrip.com/pricing/api
+- https://www.chargetrip.com/api
+- https://developers.chargetrip.com/basics/api-basics/getting-started/
+plans:
+- id: chargetrip-lite
+  name: Lite (Free)
+  type: free
+  description: >-
+    Free tier every account starts on. Limited requests per API service and basic
+    access to routing, stations, vehicles, isolines, and operators via the GraphQL
+    API and Playground.
+  entries:
+  - label: Free Requests
+    name: free_requests
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free (limited quota per API service)
+    userMultiplied: false
+  elements:
+  - name: Route Planning
+  - name: Stations
+  - name: Car Database
+  - name: Isolines / Reachability
+  - name: Operators
+- id: chargetrip-standard
+  name: Standard
+  type: subscription
+  description: >-
+    Self-service paid tier upgraded from the dashboard (settings > billing). Raises
+    request limits and unlocks premium datasets via add-ons; checkout by credit
+    card.
+  entries:
+  - label: Standard Subscription
+    name: standard
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: see pricing page
+    userMultiplied: false
+  - label: Premium Data Add-ons
+    name: addons
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: see pricing page
+    userMultiplied: false
+  elements:
+  - name: Higher Request Limits
+  - name: Premium Station Data
+  - name: Real-time Availability
+  - name: Tariffs
+- id: chargetrip-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Negotiated agreement for automakers and large e-mobility services: high-volume
+    commitments, premium data providers, SLAs, and dedicated support. Contact
+    Chargetrip sales / book a demo.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Premium Data Providers
+  - name: SLA & Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

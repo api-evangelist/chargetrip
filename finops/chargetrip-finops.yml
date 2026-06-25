@@ -1,0 +1,111 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Chargetrip
+providerId: chargetrip
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- EV
+- Routing
+- Charging Stations
+- GraphQL
+- Mobility
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Chargetrip API spend. Chargetrip bills on a hybrid, sales-led
+  model: a free Lite tier with limited per-service request quotas, a self-service
+  Standard subscription with premium-data add-ons, and negotiated Enterprise
+  agreements. Cost is driven primarily by request volume per API service (routing,
+  stations, vehicles, isolines, operators) plus premium dataset access. Exact
+  rates are not publicly published, so dollar figures are not reconciled.
+notes: >-
+  Per-service request quotas and premium-data costs are managed from the Chargetrip
+  dashboard; enterprise pricing is negotiated. Verify against
+  https://www.chargetrip.com/pricing/api during reconciliation.
+sources:
+- https://www.chargetrip.com/pricing/api
+- https://developers.chargetrip.com/basics/api-basics/getting-started/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Chargetrip
+serviceCategory: Maps and Routing
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Monthly
+  billingCurrency: EUR
+  chargeCategories:
+  - Usage
+  - Purchase
+focusColumns:
+  ServiceName: Chargetrip API
+  ServiceCategory: Maps and Routing
+  ProviderName: Chargetrip
+  PublisherName: Chargetrip
+  InvoiceIssuerName: Chargetrip
+  BillingCurrency: EUR
+  ChargeCategory: Usage
+  PricingCategory: Subscription
+meters:
+- name: route_requests
+  description: Route planning requests (newRoute mutations and route reads) per account.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - api
+- name: station_requests
+  description: Station database queries (station, stationList, stationAround) per account.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - api
+- name: vehicle_requests
+  description: Car database queries (vehicleList, vehicle) per account.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - api
+- name: isoline_requests
+  description: Isoline / reachability operations (createIsoline, isoline) per account.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - api
+- name: operator_requests
+  description: Operator queries (operatorList) per account.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - api
+- name: premium_data_access
+  description: Access to premium datasets (real-time availability, tariffs) via add-ons.
+  unit: subscriptions
+  aggregation: sum
+  dimensions:
+  - account
+  - addon
+principles:
+- name: Visibility
+  description: Monitor per-service request usage in the Chargetrip dashboard; watch the 80% threshold notifications.
+- name: Allocation
+  description: Map each API service (routing, stations, vehicles, isolines, operators) to the workload/team consuming it.
+- name: Optimization
+  description: Request only needed GraphQL fields, cache vehicle/station/operator lookups, and reserve premium-data add-ons for workloads that require them.
+- name: Accountability
+  description: Assign owners per app id; review request volume against the free quota and Standard limits before upgrading.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

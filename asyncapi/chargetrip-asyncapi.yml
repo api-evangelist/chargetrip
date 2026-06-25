@@ -1,0 +1,234 @@
+asyncapi: '2.6.0'
+id: 'urn:com:chargetrip:graphql:subscription:route-updates'
+info:
+  title: Chargetrip Route Updates (GraphQL Subscriptions over WebSocket)
+  version: '1.0.0'
+  description: |
+    AsyncAPI 2.6 description of Chargetrip's **real-time route updates** surface.
+
+    Unlike the synchronous query/mutation surface (HTTP POST to
+    `https://api.chargetrip.io/graphql`, modeled in `openapi/chargetrip-openapi.yml`),
+    Chargetrip delivers route status and route details in real time through
+    **GraphQL subscriptions over WebSocket**.
+
+    Per https://developers.chargetrip.com/api-reference/api/quick-setup-guide/ the
+    subscription endpoint is `wss://api.chargetrip.io/subscription` and uses the
+    **graphql-transport-ws** protocol. (The legacy `graphql-ws` protocol is
+    deprecated and being removed.)
+
+    The documented pattern is asynchronous: the client first issues the `newRoute`
+    mutation over HTTP, receives a route `id`, then opens a WebSocket subscription
+    `routeUpdatedById(id: $id)` and receives a stream of updates until the payload
+    `status` becomes `done`, at which point the full `route` object is available.
+
+    This document models the route-update subscription stream. It is a genuine
+    bidirectional WebSocket transport (not HTTP Server-Sent Events).
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Chargetrip Terms & Conditions
+    url: https://www.chargetrip.com/legal/terms-conditions
+  x-transport-notes:
+    transport: WebSocket (GraphQL subscriptions)
+    subProtocol: graphql-transport-ws
+    deprecatedSubProtocol: graphql-ws
+    protocol: wss
+    direction: bidirectional
+    endpoint: 'wss://api.chargetrip.io/subscription'
+    triggeredBy: 'newRoute mutation (HTTP POST /graphql) returns a route id; subscribe to routeUpdatedById(id) over WebSocket'
+    terminatesWhen: 'payload status == done'
+    source: https://developers.chargetrip.com/api-reference/api/quick-setup-guide/
+defaultContentType: application/json
+servers:
+  chargetrip-subscriptions:
+    url: api.chargetrip.io/subscription
+    protocol: wss
+    description: |
+      Chargetrip GraphQL subscription endpoint. Clients connect over WebSocket
+      using the graphql-transport-ws sub-protocol, authenticate with the
+      x-client-id and x-app-id headers, and subscribe to route update operations.
+    security:
+      - clientId: []
+        appId: []
+channels:
+  routeUpdatedById:
+    description: |
+      GraphQL subscription channel that streams route status and route details for
+      a given route `id`. The client sends a `subscribe` message carrying the
+      `routeUpdatedById($id: ID!)` operation; the server streams `next` messages
+      whose payload is a GraphQL result with `status` and (once available) the
+      `route` object. The client stops listening when `status` is `done`.
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+    subscribe:
+      operationId: routeUpdatedById
+      summary: Receive real-time route status and details for a route id.
+      description: |
+        Streamed server-to-client over the WebSocket connection after a
+        `subscribe` request. Each emission is a GraphQL execution result for the
+        `routeUpdatedById` subscription field.
+      message:
+        $ref: '#/components/messages/RouteUpdate'
+    publish:
+      operationId: subscribeToRouteUpdates
+      summary: Open the route-update subscription for a route id.
+      description: |
+        Client-to-server `subscribe` message (graphql-transport-ws) carrying the
+        GraphQL subscription document and the route `id` as a variable.
+      message:
+        $ref: '#/components/messages/SubscribeRequest'
+components:
+  securitySchemes:
+    clientId:
+      type: apiKey
+      in: user
+      description: Chargetrip x-client-id sent on the WebSocket connection.
+    appId:
+      type: apiKey
+      in: user
+      description: Chargetrip x-app-id sent on the WebSocket connection.
+  messages:
+    SubscribeRequest:
+      name: SubscribeRequest
+      title: GraphQL subscribe request
+      summary: graphql-transport-ws subscribe frame opening the route subscription.
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - id
+          - type
+          - payload
+        properties:
+          id:
+            type: string
+            description: Client-chosen subscription operation id (graphql-transport-ws).
+          type:
+            type: string
+            enum:
+              - subscribe
+          payload:
+            type: object
+            required:
+              - query
+            properties:
+              operationName:
+                type: string
+                enum:
+                  - routeUpdatedById
+              query:
+                type: string
+                description: 'subscription routeUpdatedById($id: ID!) { routeUpdatedById(id: $id) { status route { charges distance duration } } }'
+              variables:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    description: Route id returned by the newRoute mutation.
+      examples:
+        - name: openSubscription
+          summary: Subscribe to updates for a route id
+          payload:
+            id: '1'
+            type: subscribe
+            payload:
+              operationName: routeUpdatedById
+              query: 'subscription routeUpdatedById($id: ID!) { routeUpdatedById(id: $id) { status route { charges distance duration } } }'
+              variables:
+                id: 5f2e1a9c7d4b3e0012abcd34
+    RouteUpdate:
+      name: RouteUpdate
+      title: Route update event
+      summary: A graphql-transport-ws `next` frame carrying a route execution result.
+      contentType: application/json
+      description: |
+        Server-to-client `next` message. The `payload.data.routeUpdatedById`
+        object carries the current `status` (pending | done | error) and, once
+        the route is computed, the `route` details.
+      payload:
+        $ref: '#/components/schemas/RouteNextMessage'
+      examples:
+        - name: pending
+          summary: Route still computing
+          payload:
+            id: '1'
+            type: next
+            payload:
+              data:
+                routeUpdatedById:
+                  status: pending
+                  route: null
+        - name: done
+          summary: Route ready
+          payload:
+            id: '1'
+            type: next
+            payload:
+              data:
+                routeUpdatedById:
+                  status: done
+                  route:
+                    charges: 1
+                    distance: 498000
+                    duration: 19800
+  schemas:
+    RouteNextMessage:
+      type: object
+      required:
+        - id
+        - type
+        - payload
+      properties:
+        id:
+          type: string
+          description: Subscription operation id matching the subscribe request.
+        type:
+          type: string
+          enum:
+            - next
+          description: graphql-transport-ws message type for streamed results.
+        payload:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                routeUpdatedById:
+                  $ref: '#/components/schemas/RouteResult'
+            errors:
+              type: array
+              items:
+                type: object
+    RouteResult:
+      type: object
+      description: Route status envelope streamed by the subscription.
+      properties:
+        status:
+          type: string
+          enum:
+            - pending
+            - done
+            - error
+          description: Current computation status of the route.
+        route:
+          type: object
+          nullable: true
+          description: Route details; populated once status is done.
+          properties:
+            charges:
+              type: integer
+              description: Number of charging stops in the route.
+            distance:
+              type: number
+              description: Total route distance in meters.
+            duration:
+              type: number
+              description: Total route duration in seconds (driving + charging).
+            consumption:
+              type: number
+              description: Total energy consumption for the route.
