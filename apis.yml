@@ -128,6 +128,12 @@ apis:
     query returns operators with pagination and filters; operators can be used to
     tailor the routing algorithm toward preferred networks.
 common:
+- type: VulnerabilityDisclosure
+  url: security/chargetrip-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/chargetrip-domain-security.yml
+- type: Authentication
+  url: authentication/chargetrip-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/chargetrip
 - type: LinkedIn
@@ -142,6 +148,8 @@ common:
   url: rate-limits/chargetrip-rate-limits.yml
 - type: FinOps
   url: finops/chargetrip-finops.yml
+- url: https://medium.com/feed/chargetrip
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

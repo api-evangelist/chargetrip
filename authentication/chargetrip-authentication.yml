@@ -1,0 +1,23 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/chargetrip-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: clientId
+  type: apiKey
+  in: header
+  parameter: x-client-id
+  description: Chargetrip client identifier sent on every request.
+  sources:
+  - openapi/chargetrip-openapi.yml
+- name: appId
+  type: apiKey
+  in: header
+  parameter: x-app-id
+  description: Chargetrip application identifier sent on every request.
+  sources:
+  - openapi/chargetrip-openapi.yml
