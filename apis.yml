@@ -128,6 +128,8 @@ apis:
     query returns operators with pagination and filters; operators can be used to
     tailor the routing algorithm toward preferred networks.
 common:
+- type: AgenticAccess
+  url: agentic-access/chargetrip-agentic-access.yml
 - type: VulnerabilityDisclosure
   url: security/chargetrip-vulnerability-disclosure.yml
 - type: DomainSecurity
