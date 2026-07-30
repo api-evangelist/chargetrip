@@ -6,7 +6,20 @@ description: Chargetrip provides an EV routing GraphQL API used by automakers an
   services. It plans range-aware routes with charging stops, exposes a curated charge
   station database, an EV vehicle/consumption database, isolines (reachability),
   and operator data, with real-time route updates delivered over WebSocket subscriptions.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/chargetrip.png
 tags:
 - EV
 - Routing
@@ -17,116 +30,40 @@ created: '2026-06-21'
 modified: '2026-06-21'
 specificationVersion: '0.19'
 apis:
-- aid: chargetrip:chargetrip-route-planning-api
-  name: Chargetrip Route Planning API
-  tags:
-  - Routing
-  - EV
-  - Navigation
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+- aid: chargetrip:chargetrip-graphql-api
+  name: Chargetrip GraphQL API
+  description: The GraphQL API from Chargetrip — 1 operation(s) for graphql.
   humanURL: https://developers.chargetrip.com/api-reference/routes/introduction/
   baseURL: https://api.chargetrip.io/graphql
-  properties:
-  - url: https://developers.chargetrip.com/api-reference/routes/introduction/
-    type: Documentation
-  - url: https://developers.chargetrip.com/api-reference/routes/introduction/
-    type: APIReference
-  - url: openapi/chargetrip-openapi.yml
-    type: OpenAPI
-  - url: asyncapi/chargetrip-asyncapi.yml
-    type: AsyncAPI
-  - url: graphql/chargetrip-graphql.md
-    type: GraphQL
-  description: Range-aware EV route planning over GraphQL. The newRoute mutation calculates
-    a route with charging stops from vehicle, origin, and destination inputs and returns
-    a route id; results are fetched with the route query or streamed in real time via
-    the routeUpdatedById subscription over WebSocket.
-- aid: chargetrip:chargetrip-stations-api
-  name: Chargetrip Stations API
   tags:
-  - Charging Stations
-  - OCPI
-  - Availability
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.chargetrip.com/api-reference/stations/introduction/
-  baseURL: https://api.chargetrip.io/graphql
+  - GraphQL
   properties:
-  - url: https://developers.chargetrip.com/api-reference/stations/introduction/
-    type: Documentation
-  - url: https://developers.chargetrip.com/api-reference/stations/introduction/
-    type: APIReference
-  - url: openapi/chargetrip-openapi.yml
-    type: OpenAPI
-  - url: graphql/chargetrip-graphql.md
-    type: GraphQL
-  description: OCPI 2.2-aligned charge station database accessed with the station,
-    stationList, and stationAround queries, returning location, connector, power,
-    pricing/tariff, and real-time or predicted availability for curated European
-    charging points.
-- aid: chargetrip:chargetrip-car-database-api
-  name: Chargetrip Car Database API
-  tags:
-  - Vehicles
-  - Consumption
-  - EV
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.chargetrip.com/api-reference/vehicle/introduction/index.html
-  baseURL: https://api.chargetrip.io/graphql
-  properties:
-  - url: https://developers.chargetrip.com/api-reference/vehicle/introduction/index.html
-    type: Documentation
-  - url: https://developers.chargetrip.com/api-reference/vehicle/query-vehicles/
-    type: APIReference
-  - url: openapi/chargetrip-openapi.yml
-    type: OpenAPI
-  - url: graphql/chargetrip-graphql.md
-    type: GraphQL
-  description: EV vehicle and consumption-model database. The vehicleList query returns
-    paginated, filterable/searchable vehicles and the vehicle query returns full
-    details by id; a vehicle id is required as input to route and isoline operations.
-- aid: chargetrip:chargetrip-isolines-reachability-api
-  name: Chargetrip Isolines / Reachability API
-  tags:
-  - Isolines
-  - Reachability
-  - Range
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.chargetrip.com/api-reference/isolines/query-isoline/
-  baseURL: https://api.chargetrip.io/graphql
-  properties:
-  - url: https://developers.chargetrip.com/api-reference/isolines/query-isoline/
-    type: Documentation
-  - url: https://developers.chargetrip.com/api-reference/isolines/query-isoline/
-    type: APIReference
-  - url: openapi/chargetrip-openapi.yml
-    type: OpenAPI
-  - url: graphql/chargetrip-graphql.md
-    type: GraphQL
-  description: Drivable reachability isolines. The createIsoline mutation returns an
-    isoline id and the isoline query returns multipolygon shapes plus the maximum
-    drivable distance, accounting for state of charge, climate, weight, temperature,
-    and weather.
-- aid: chargetrip:chargetrip-operators-api
-  name: Chargetrip Operators API
-  tags:
-  - Operators
-  - Networks
-  - Charging
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.chargetrip.com/api-reference/stations/query-station-operators/
-  baseURL: https://api.chargetrip.io/graphql
-  properties:
-  - url: https://developers.chargetrip.com/api-reference/stations/query-station-operators/
-    type: Documentation
-  - url: https://developers.chargetrip.com/api-reference/stations/query-station-operators/
-    type: APIReference
-  - url: openapi/chargetrip-openapi.yml
-    type: OpenAPI
-  - url: graphql/chargetrip-graphql.md
-    type: GraphQL
-  description: Charge point operator (CPO) data for the station database. The operatorList
-    query returns operators with pagination and filters; operators can be used to
-    tailor the routing algorithm toward preferred networks.
+  - type: OpenAPI
+    url: openapi/chargetrip-graphql-api-openapi.yml
+  - type: Documentation
+    url: https://developers.chargetrip.com/api-reference/routes/introduction/
+  - type: APIReference
+    url: https://developers.chargetrip.com/api-reference/routes/introduction/
+  - type: AsyncAPI
+    url: asyncapi/chargetrip-asyncapi.yml
+  - type: GraphQL
+    url: graphql/chargetrip-graphql.md
+  - type: Documentation
+    url: https://developers.chargetrip.com/api-reference/stations/introduction/
+  - type: APIReference
+    url: https://developers.chargetrip.com/api-reference/stations/introduction/
+  - type: Documentation
+    url: https://developers.chargetrip.com/api-reference/vehicle/introduction/index.html
+  - type: APIReference
+    url: https://developers.chargetrip.com/api-reference/vehicle/query-vehicles/
+  - type: Documentation
+    url: https://developers.chargetrip.com/api-reference/isolines/query-isoline/
+  - type: APIReference
+    url: https://developers.chargetrip.com/api-reference/isolines/query-isoline/
+  - type: Documentation
+    url: https://developers.chargetrip.com/api-reference/stations/query-station-operators/
+  - type: APIReference
+    url: https://developers.chargetrip.com/api-reference/stations/query-station-operators/
 common:
 - type: AgenticAccess
   url: agentic-access/chargetrip-agentic-access.yml
