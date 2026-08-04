@@ -1,0 +1,14 @@
+{
+  "provider": "chargetrip",
+  "sources": [
+    "chargetrip-graphql-api-openapi.yml"
+  ],
+  "outputs": [
+    "chargetrip-graphql-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
