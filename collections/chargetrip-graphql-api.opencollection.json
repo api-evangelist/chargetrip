@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Chargetrip API (HTTP transport) GraphQL API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-client-id",
+      "value": "{{x-client-id}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "GraphQL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Execute a GraphQL query or mutation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.chargetrip.io/graphql",
+            "headers": [
+              {
+                "name": "x-client-id",
+                "value": ""
+              },
+              {
+                "name": "x-app-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Single GraphQL entry point. Send a JSON body with a `query` string and optional `operationName` and `variables`. Documented operations include the mutations `newRoute` and `createIsoline`, and the queries `route`, `isoline`, `station`, `stationList`, `stationAround`, `vehicleList`, `vehicle`, and `operatorList`. Subscriptions (e.g. `routeUpdatedById`) are not available over HTTP; use the WebSocket subscription endpoint instead."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

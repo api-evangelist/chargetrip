@@ -1,0 +1,290 @@
+{
+  "item": [
+    {
+      "id": "9ce6ca59-7bcc-4488-8008-8db73b7a2b83",
+      "name": "GraphQL",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c22ff2da-42de-466b-b84b-890233d985df",
+          "name": "Execute a GraphQL query or mutation.",
+          "request": {
+            "name": "Execute a GraphQL query or mutation.",
+            "description": {
+              "content": "Single GraphQL entry point. Send a JSON body with a `query` string and optional `operationName` and `variables`. Documented operations include the mutations `newRoute` and `createIsoline`, and the queries `route`, `isoline`, `station`, `stationList`, `stationAround`, `vehicleList`, `vehicle`, and `operatorList`. Subscriptions (e.g. `routeUpdatedById`) are not available over HTTP; use the WebSocket subscription endpoint instead.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "graphql"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Chargetrip client identifier for your account.",
+                "key": "x-client-id",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Chargetrip application identifier.",
+                "key": "x-app-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"operationName\": \"<string>\",\n  \"variables\": {\n    \"key_0\": 5261.96651649933,\n    \"key_1\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "57579056-6634-4641-9095-2999acb49ea9",
+              "name": "GraphQL response. Note that GraphQL returns HTTP 200 even when the `errors` array is populated; inspect both `data` and `errors`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-client-id",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Chargetrip client identifier for your account.",
+                    "key": "x-client-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Chargetrip application identifier.",
+                    "key": "x-app-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"operationName\": \"newRoute\",\n  \"query\": \"mutation newRoute($input: RequestInput!) { newRoute(input: $input) }\",\n  \"variables\": {\n    \"input\": {\n      \"ev\": {\n        \"id\": \"5d161be5c9eef46132d9d20a\",\n        \"battery\": {\n          \"stateOfCharge\": {\n            \"value\": 70,\n            \"type\": \"kilowatt_hour\"\n          }\n        }\n      },\n      \"routeRequest\": {\n        \"origin\": {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              4.8951,\n              52.3702\n            ]\n          }\n        },\n        \"destination\": {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              2.3522,\n              48.8566\n            ]\n          }\n        }\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"key_0\": 1010.6415565000193,\n    \"key_1\": 4968.223280989779\n  },\n  \"errors\": [\n    {\n      \"message\": \"string\",\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": 4376\n      }\n    },\n    {\n      \"message\": \"string\",\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": 3608\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37b28551-6d36-4fdb-adcf-7d9fd3800c97",
+              "name": "Missing or invalid x-client-id / x-app-id credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-client-id",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Chargetrip client identifier for your account.",
+                    "key": "x-client-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Chargetrip application identifier.",
+                    "key": "x-app-id",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"operationName\": \"newRoute\",\n  \"query\": \"mutation newRoute($input: RequestInput!) { newRoute(input: $input) }\",\n  \"variables\": {\n    \"input\": {\n      \"ev\": {\n        \"id\": \"5d161be5c9eef46132d9d20a\",\n        \"battery\": {\n          \"stateOfCharge\": {\n            \"value\": 70,\n            \"type\": \"kilowatt_hour\"\n          }\n        }\n      },\n      \"routeRequest\": {\n        \"origin\": {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              4.8951,\n              52.3702\n            ]\n          }\n        },\n        \"destination\": {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              2.3522,\n              48.8566\n            ]\n          }\n        }\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2c66a8b5-336a-4a04-9696-6f20978e8bed",
+              "name": "Rate or quota limit exceeded for the account / API service.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-client-id",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Chargetrip client identifier for your account.",
+                    "key": "x-client-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Chargetrip application identifier.",
+                    "key": "x-app-id",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"operationName\": \"newRoute\",\n  \"query\": \"mutation newRoute($input: RequestInput!) { newRoute(input: $input) }\",\n  \"variables\": {\n    \"input\": {\n      \"ev\": {\n        \"id\": \"5d161be5c9eef46132d9d20a\",\n        \"battery\": {\n          \"stateOfCharge\": {\n            \"value\": 70,\n            \"type\": \"kilowatt_hour\"\n          }\n        }\n      },\n      \"routeRequest\": {\n        \"origin\": {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              4.8951,\n              52.3702\n            ]\n          }\n        },\n        \"destination\": {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              2.3522,\n              48.8566\n            ]\n          }\n        }\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.chargetrip.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-client-id"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5ae3cca3-50ec-4058-b4b7-f4897b175e34",
+    "name": "Chargetrip API (HTTP transport) GraphQL API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "HTTP transport view of the Chargetrip EV routing GraphQL API. Chargetrip is a native GraphQL API; all queries and mutations are issued as HTTP POST requests to a single `/graphql` endpoint with a JSON body containing `query`, `operationName`, and `variables`. Authentication uses the `x-client-id` and `x-app-id` headers. Real-time route updates are delivered over a separate WebSocket subscription endpoint (wss://api.chargetrip.io/subscription, the graphql-transport-ws protocol) and are described in asyncapi/chargetrip-asyncapi.yml, not here. Operation-level detail is modeled in graphql/chargetrip-graphql.md and graphql/chargetrip-schema.graphql.\n\nContact Support:\n Name: Chargetrip",
+      "type": "text/plain"
+    }
+  }
+}
