@@ -43,16 +43,16 @@ created: '2026-06-21'
 modified: '2026-06-21'
 specificationVersion: '0.23'
 apis:
-- aid: chargetrip:chargetrip-graphql-api
-  name: Chargetrip GraphQL API
-  description: The GraphQL API from Chargetrip — 1 operation(s) for graphql.
+- aid: chargetrip:chargetrip-graph-ql-api
+  name: Chargetrip Graph QL API
+  description: The Graph QL API from Chargetrip — 1 operation(s) for graph ql.
   humanURL: https://developers.chargetrip.com/api-reference/routes/introduction/
   baseURL: https://api.chargetrip.io/graphql
   tags:
-  - GraphQL
+  - Graph QL
   properties:
   - type: OpenAPI
-    url: openapi/chargetrip-graphql-api-openapi.yml
+    url: openapi/chargetrip-graph-ql-api-openapi.yml
   - type: Documentation
     url: https://developers.chargetrip.com/api-reference/routes/introduction/
   - type: APIReference
