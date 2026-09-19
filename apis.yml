@@ -49,6 +49,8 @@ apis:
   humanURL: https://developers.chargetrip.com/api-reference/routes/introduction/
   baseURL: https://api.chargetrip.io/graphql
   tags:
+  - GraphQL
+  tags_raw:
   - Graph QL
   properties:
   - type: OpenAPI
