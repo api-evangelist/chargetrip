@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Chargetrip API (HTTP transport) Graph QL API
+  title: Chargetrip API (HTTP transport) GraphQL API
   description: HTTP transport view of the Chargetrip EV routing GraphQL API.
   termsOfService: https://www.chargetrip.com/legal/terms-conditions
   contact:
@@ -97,6 +97,18 @@ paths:
           description: Rate or quota limit exceeded for the account / API service.
 components:
   schemas:
+    GraphQLError:
+      type: object
+      properties:
+        message:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+        extensions:
+          type: object
+          additionalProperties: true
     GraphQLResponse:
       type: object
       properties:
@@ -113,18 +125,6 @@ components:
           description: GraphQL errors, if any. Present even on HTTP 200.
           items:
             $ref: '#/components/schemas/GraphQLError'
-    GraphQLError:
-      type: object
-      properties:
-        message:
-          type: string
-        path:
-          type: array
-          items:
-            type: string
-        extensions:
-          type: object
-          additionalProperties: true
     GraphQLRequest:
       type: object
       required:
