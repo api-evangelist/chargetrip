@@ -1,4 +1,4 @@
-# Chargetrip (chargetrip)
+# Chargetrip
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,145 +66,141 @@
 
 Chargetrip provides an EV routing GraphQL API used by automakers and e-mobility services. It plans range-aware routes with charging stops, exposes a curated charge station database, an EV vehicle/consumption database, isolines (reachability), and operator data, with real-time route updates delivered over WebSocket subscriptions.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/chargetrip/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/chargetrip/refs/heads/main/apis.yml)
+**Areas:** Electric Vehicles · Routing · Charging Stations · GraphQL · Mobility · Real-Time
 
-## Tags
+## Chargetrip on APIs.io
 
-- EV
-- Routing
-- Charging Stations
-- GraphQL
-- Mobility
+Everything profiled for Chargetrip is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/chargetrip/](https://apis.io/providers/chargetrip/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (1)
 
-- **Created:** 2026-06-21
-- **Modified:** 2026-06-21
+- [Chargetrip Graph QL API](https://apis.io/apis/chargetrip/chargetrip-graph-ql-api/) — The Graph QL API from Chargetrip — 1 operation(s) for graph ql.
 
-## APIs
+### Published properties
 
-### Chargetrip Route Planning API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Range-aware EV route planning over GraphQL. The newRoute mutation calculates a route with charging stops from vehicle, origin, and destination inputs and returns a route id; results are fetched with the route query or streamed in real time via the routeUpdatedById subscription over WebSocket.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://developers.chargetrip.com/api-reference/routes/introduction/](https://developers.chargetrip.com/api-reference/routes/introduction/)
-- **Base URL:** `https://api.chargetrip.io/graphql`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Chargetrip Route Updates (GraphQL Subscriptions over WebSocket)](https://apis.io/asyncapis/chargetrip/chargetrip-asyncapi/)
 
-- Routing
-- EV
-- Navigation
+#### Event channels (1)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://developers.chargetrip.com/api-reference/routes/introduction/)
-- [API Reference](https://developers.chargetrip.com/api-reference/routes/introduction/)
-- [OpenAPI](openapi/chargetrip-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/chargetrip-graphql.md) — [GraphQL](https://spec.graphql.org/)
-- [Postman Collection](collections/chargetrip.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/chargetrip.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [AsyncAPI](asyncapi/chargetrip-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
+- [routeUpdatedById](https://apis.io/channels/chargetrip/routeupdatedbyid/)
 
-### Chargetrip Stations API
+#### GraphQL (1)
 
-OCPI 2.2-aligned charge station database accessed with the station, stationList, and stationAround queries, returning location, connector, power, pricing/tariff, and real-time or predicted availability for curated European charging points.
+GraphQL schemas.
 
-- **Human URL:** [https://developers.chargetrip.com/api-reference/stations/introduction/](https://developers.chargetrip.com/api-reference/stations/introduction/)
-- **Base URL:** `https://api.chargetrip.io/graphql`
+- [Chargetrip GraphQL API](https://apis.io/graphqls/chargetrip/chargetrip-graphql/)
 
-#### Tags
+#### Agentic access (1)
 
-- Charging Stations
-- OCPI
-- Availability
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Properties
+- [Chargetrip Agentic Access](https://apis.io/agentic-access/chargetrip/chargetrip-agentic-access/)
 
-- [Documentation](https://developers.chargetrip.com/api-reference/stations/introduction/)
-- [API Reference](https://developers.chargetrip.com/api-reference/stations/introduction/)
-- [OpenAPI](openapi/chargetrip-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/chargetrip-graphql.md) — [GraphQL](https://spec.graphql.org/)
-- [Postman Collection](collections/chargetrip.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/chargetrip.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Collections (2)
 
-### Chargetrip Car Database API
+Postman and Open Collection request collections.
 
-EV vehicle and consumption-model database. The vehicleList query returns paginated, filterable/searchable vehicles and the vehicle query returns full details by id; a vehicle id is required as input to route and isoline operations.
+- [Chargetrip GraphQL API](https://apis.io/collections/chargetrip/open-chargetrip/)
+- [Chargetrip API (HTTP transport) GraphQL API](https://apis.io/collections/chargetrip/open-chargetrip-graphql-api/)
 
-- **Human URL:** [https://developers.chargetrip.com/api-reference/vehicle/introduction/index.html](https://developers.chargetrip.com/api-reference/vehicle/introduction/index.html)
-- **Base URL:** `https://api.chargetrip.io/graphql`
+#### Governance rules (1)
 
-#### Tags
+Spectral rulesets for the provider's contracts.
 
-- Vehicles
-- Consumption
-- EV
+- [Chargetrip — asyncapi rules](https://apis.io/rules/chargetrip/chargetrip-asyncapi-spectral-rules/)
 
-#### Properties
+#### Security (3)
 
-- [Documentation](https://developers.chargetrip.com/api-reference/vehicle/introduction/index.html)
-- [API Reference](https://developers.chargetrip.com/api-reference/vehicle/query-vehicles/)
-- [OpenAPI](openapi/chargetrip-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/chargetrip-graphql.md) — [GraphQL](https://spec.graphql.org/)
-- [Postman Collection](collections/chargetrip.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/chargetrip.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Authentication, trust centre, and vulnerability disclosure.
 
-### Chargetrip Isolines / Reachability API
+- [Chargetrip Authentication](https://apis.io/security/chargetrip/chargetrip-authentication/)
+- [Chargetrip Domain Security](https://apis.io/security/chargetrip/chargetrip-domain-security/)
+- [Chargetrip Vulnerability Disclosure](https://apis.io/security/chargetrip/chargetrip-vulnerability-disclosure/)
 
-Drivable reachability isolines. The createIsoline mutation returns an isoline id and the isoline query returns multipolygon shapes plus the maximum drivable distance, accounting for state of charge, climate, weight, temperature, and weather.
+#### Plans and pricing (1)
 
-- **Human URL:** [https://developers.chargetrip.com/api-reference/isolines/query-isoline/](https://developers.chargetrip.com/api-reference/isolines/query-isoline/)
-- **Base URL:** `https://api.chargetrip.io/graphql`
+Published plans, tiers and prices.
 
-#### Tags
+- [Chargetrip Plans Pricing](https://apis.io/plans/chargetrip/chargetrip-plans-pricing/)
 
-- Isolines
-- Reachability
-- Range
+#### Rate limits (1)
 
-#### Properties
+Published request limits.
 
-- [Documentation](https://developers.chargetrip.com/api-reference/isolines/query-isoline/)
-- [API Reference](https://developers.chargetrip.com/api-reference/isolines/query-isoline/)
-- [OpenAPI](openapi/chargetrip-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/chargetrip-graphql.md) — [GraphQL](https://spec.graphql.org/)
-- [Postman Collection](collections/chargetrip.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/chargetrip.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Chargetrip Rate Limits](https://apis.io/rate-limits/chargetrip/chargetrip-rate-limits/)
 
-### Chargetrip Operators API
+#### FinOps (1)
 
-Charge point operator (CPO) data for the station database. The operatorList query returns operators with pagination and filters; operators can be used to tailor the routing algorithm toward preferred networks.
+What the API costs to run, by operation.
 
-- **Human URL:** [https://developers.chargetrip.com/api-reference/stations/query-station-operators/](https://developers.chargetrip.com/api-reference/stations/query-station-operators/)
-- **Base URL:** `https://api.chargetrip.io/graphql`
+- [Chargetrip Finops](https://apis.io/finops/chargetrip/chargetrip-finops/)
 
-#### Tags
+## Where to find this API
 
-- Operators
-- Networks
-- Charging
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-#### Properties
-
-- [Documentation](https://developers.chargetrip.com/api-reference/stations/query-station-operators/)
-- [API Reference](https://developers.chargetrip.com/api-reference/stations/query-station-operators/)
-- [OpenAPI](openapi/chargetrip-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GraphQL](graphql/chargetrip-graphql.md) — [GraphQL](https://spec.graphql.org/)
-- [Postman Collection](collections/chargetrip.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/chargetrip.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/chargetrip)
-- [LinkedIn](https://www.linkedin.com/company/chargetrip)
 - [Website](https://www.chargetrip.com)
 - [Documentation](https://developers.chargetrip.com)
-- [Plans](plans/chargetrip-plans-pricing.yml)
-- [Rate Limits](rate-limits/chargetrip-rate-limits.yml)
-- [Fin Ops](finops/chargetrip-finops.yml)
+- [Blog](https://medium.com/feed/chargetrip)
+- [GitHub](https://github.com/chargetrip)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 31.6** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 59.2 |
+| Contract governance | 11.4 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 31.0 |
+| Access clarity | 7.9 |
+
+**Agent readiness 24.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 17.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/chargetrip/](https://apis.io/providers/chargetrip/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Chargetrip: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/chargetrip/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
